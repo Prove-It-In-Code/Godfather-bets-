@@ -18,6 +18,8 @@ Complete starter for an Azure-deployed sports betting predictor with:
 
 ## API
 
+When deployed to Azure Functions, this repository sets `host.json` `extensions.http.routePrefix` to `""`, so endpoints remain `/health` and `/predict` (no `/api` prefix).
+
 ### `GET /health`
 Returns service status and supported sports.
 
