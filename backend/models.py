@@ -8,6 +8,13 @@ import joblib
 import numpy as np
 
 SUPPORTED_SPORTS = {"NFL", "NBA", "MLB", "NHL"}
+MODEL_FILES = {
+    "NFL": "nfl_model.joblib",
+    "NBA": "nba_model.joblib",
+    "MLB": "mlb_model.joblib",
+    "NHL": "nhl_model.joblib",
+}
+MODEL_DIR = Path(__file__).resolve().parent.parent / "models"
 DEFAULT_FEATURE_ORDER = [
     "home_win_pct",
     "away_win_pct",
@@ -40,7 +47,11 @@ class MockSklearnModel:
 
 
 def _model_path(sport: str) -> Path:
-    return Path(__file__).resolve().parent.parent / "models" / f"{sport.lower()}_model.joblib"
+    model_name = MODEL_FILES[sport]
+    model_file = (MODEL_DIR / model_name).resolve()
+    if model_file.parent != MODEL_DIR.resolve():
+        raise ValueError("Model path validation failed")
+    return model_file
 
 
 @lru_cache(maxsize=len(SUPPORTED_SPORTS))
@@ -50,7 +61,8 @@ def load_model(sport: str):
         raise ValueError(f"Unsupported sport '{sport}'")
 
     model_file = _model_path(sport)
-    if model_file.exists():
+    if model_file.is_file() and model_file.suffix == ".joblib":
+        # Load only from fixed, allowlisted local paths.
         return joblib.load(model_file)
 
     return MockSklearnModel(sport)
