@@ -67,6 +67,7 @@ final class SportsBettingAPI {
 }
 
 // Example usage:
+// host.json sets Azure Functions routePrefix to "", so /predict is used directly.
 // let api = SportsBettingAPI(baseURL: URL(string: "https://<FUNCTION_APP>.azurewebsites.net")!)
 // let request = PredictionRequest(sport: "NFL", homeTeam: "KC", awayTeam: "BUF", vegasSpread: -2.5,
 //                                 features: ["home_win_pct": 0.72, "away_win_pct": 0.65, "home_rest_days": 7, "away_rest_days": 6, "home_injuries": 1, "away_injuries": 2, "recent_form_delta": 0.15])

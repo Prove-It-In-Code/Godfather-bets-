@@ -33,7 +33,10 @@ def health() -> tuple:
 
 @app.post("/predict")
 def predict() -> tuple:
-    payload = request.get_json(silent=True) or {}
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"error": "request body must be a JSON object"}), 400
+
     sport = str(payload.get("sport", "")).upper()
     if sport not in SUPPORTED_SPORTS:
         return jsonify({"error": f"sport must be one of {sorted(SUPPORTED_SPORTS)}"}), 400
